@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Add a House{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <form method="POST" enctype="multipart/form-data" class="p-5 rounded shadow-lg bg-white">
+      <h3 class="text-center mb-4 text-dark">Would you like to Rent or Sell your House?</h3>
+
+      <!-- Form Introduction -->
+      <p class="text-center mb-4 text-muted">Please select whether you want to rent out or sell your house.</p>
+
+      <!-- Rent Button -->
+      <div class="d-grid gap-2 mb-4">
+        <button type="submit" name="action" value="rent" class="btn btn-outline-primary btn-lg d-flex align-items-center justify-content-center">
+          <i class="fas fa-home me-2"></i> Rent my House
+        </button>
+      </div>
+
+      <!-- Sell Button -->
+      <div class="d-grid gap-2">
+        <button type="submit" name="action" value="sell" class="btn btn-outline-warning btn-lg d-flex align-items-center justify-content-center">
+          <i class="fas fa-sign-for-sale me-2"></i> Sell my House
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

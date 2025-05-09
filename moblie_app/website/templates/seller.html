@@ -1,0 +1,95 @@
+{% extends "base.html" %} {% block title %}Seller Home{% endblock %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12 text-center mt-5">
+      <h1>Welcome, {{ user.first_name }}!</h1>
+      <p class="lead">Manage your store and track your sales performance.</p>
+    </div>
+  </div>
+
+  <!-- Sales Overview -->
+  <div class="row mt-5">
+    <div class="col-lg-12">
+      <h2>Sales Overview</h2>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Total Sales</h5>
+          <p class="card-text">$15,500</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Products Sold</h5>
+          <p class="card-text">350</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Pending Orders</h5>
+          <p class="card-text">23</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manage Inventory -->
+  <div class="row mt-5">
+    <div class="col-lg-12">
+      <h2>Manage Inventory</h2>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Add New Product</h5>
+          <p class="card-text">
+            Easily add new products to your store. Set pricing, upload images, and more.
+          </p>
+          <a href="/seller/add-product" class="btn btn-primary">Add Product</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">View Inventory</h5>
+          <p class="card-text">Check your current stock, update prices, or remove items.</p>
+          <a href="/seller/manage_inventory" class="btn btn-outline-primary">Manage Inventory</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sales Analytics -->
+  <div class="row mt-5">
+    <div class="col-lg-12">
+      <h2>Sales Analytics</h2>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Daily Sales Report</h5>
+          <p class="card-text">
+            Keep track of your daily sales and monitor performance over time.
+          </p>
+          <a href="/seller/sales-report" class="btn btn-outline-success">View Report</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Profit/Loss Overview</h5>
+          <p class="card-text">Analyze your profit margins and business performance.</p>
+          <a href="/seller/profit-report" class="btn btn-outline-success">View Report</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

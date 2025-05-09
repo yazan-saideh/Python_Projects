@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Buyer Home{% endblock %}
+{% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-12 text-center">
+      <h1 class="display-4">Welcome, {{ user.first_name }}!</h1>
+      <p class="lead">Discover amazing estate deals just for you.</p>
+    </div>
+  </div>
+
+  <!-- Featured Estates -->
+  <div class="row mt-5">
+    <div class="col-lg-12">
+      <h2 class="text-center mb-4">Featured Estates</h2>
+    </div>
+
+    {% for estate in estates %}
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm hover-shadow">
+        <img src="{{ url_for('static', filename=estate.image_filename) }}" class="card-img-top" alt="Estate Image">
+        <div class="card-body text-center">
+          <h5 class="card-title font-weight-bold"><strong>{{ 'Apartment' if estate.property_type == 'apartment' else 'House' }}</strong></h5>
+          <p class="card-text">
+            <strong>Location:</strong> {{ estate.location }}<br>
+            <strong>Price:</strong> ${{ estate.price }}<br>
+            <strong>Bedrooms:</strong> {{ estate.bedrooms }}<br>
+            <strong>Bathrooms:</strong> {{ estate.bathrooms }}<br>
+            <strong>Garage:</strong> {{ 'Yes' if estate.garage else 'No' }}
+          </p>
+          <a href="#" class="btn btn-primary">View Details</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .hover-shadow {
+    transition: transform 0.2s; /* Smooth transition for hover effect */
+  }
+  .hover-shadow:hover {
+    transform: scale(1.05); /* Scale up on hover */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+  }
+</style>
+
+{% endblock %}

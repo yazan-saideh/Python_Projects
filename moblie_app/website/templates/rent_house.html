@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% block title %}Sell My House{% endblock %}
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow">
+        <div class="card-header text-center">
+          <h3>Add House</h3>
+        </div>
+        <div class="card-body">
+          <form method="POST" enctype="multipart/form-data">
+            <!-- Price -->
+            <div class="form-floating mb-3">
+              <input
+                type="number"
+                class="form-control"
+                id="price"
+                name="price"
+                placeholder="Enter price"
+                required
+              />
+              <label for="price">Price ($)</label>
+            </div>
+
+            <!-- House Size -->
+            <div class="form-floating mb-3">
+              <input
+                type="number"
+                class="form-control"
+                id="size"
+                name="size"
+                placeholder="House size in sq. ft."
+                required
+              />
+              <label for="size">House Size (sq. ft.)</label>
+            </div>
+
+            <!-- Location -->
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="location"
+                name="location"
+                placeholder="Enter location"
+                required
+              />
+              <label for="location">Location</label>
+            </div>
+
+            <!-- Bedroom -->
+            <div class="form-floating mb-3">
+              <input
+                type="number"
+                class="form-control"
+                id="bedroom"
+                name="bedroom"
+                placeholder="Number of bedrooms"
+                required
+              />
+              <label for="bedroom">Bedrooms</label>
+            </div>
+
+            <!-- Bathroom -->
+            <div class="form-floating mb-3">
+              <input
+                type="number"
+                class="form-control"
+                id="bathroom"
+                name="bathroom"
+                placeholder="Number of bathrooms"
+                required
+              />
+              <label for="bathroom">Bathrooms</label>
+            </div>
+
+            <!-- Garage -->
+            <div class="mb-3">
+              <label class="form-label">Garage</label>
+              <div class="d-flex">
+                <div class="form-check me-3">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="garage"
+                    id="garageYes"
+                    value="yes"
+                    required
+                  />
+                  <label class="form-check-label" for="garageYes">Yes</label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="garage"
+                    id="garageNo"
+                    value="no"
+                    required
+                  />
+                  <label class="form-check-label" for="garageNo">No</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="date"
+                class="form-control"
+                id="date"
+                name="date"
+                placeholder="date"
+                required
+              />
+              <label for="date">Date</label>
+            </div>
+            <!-- Image Upload -->
+            <div class="mb-3">
+              <label for="image" class="form-label">Upload Image</label>
+              <input
+                type="file"
+                class="form-control"
+                id="image"
+                name="image"
+                accept="image/*"
+                required
+              />
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Custom CSS for Enhanced Aesthetics -->
+<style>
+  .card {
+    border-radius: 10px;
+  }
+
+  .card-header {
+    background-color: #1a1a2e;
+    color: #fff;
+  }
+
+  .form-control:focus {
+    border-color: #f39c12;
+    box-shadow: 0 0 5px rgba(243, 156, 18, 0.5);
+  }
+
+  .btn-primary {
+    background-color: #f39c12;
+    border: none;
+  }
+
+  .btn-primary:hover {
+    background-color: #e67e22;
+  }
+</style>
+{% endblock %}

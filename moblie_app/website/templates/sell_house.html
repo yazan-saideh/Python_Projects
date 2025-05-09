@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Sell My House{% endblock %}
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow">
+        <div class="card-header text-center">
+          <h3>Add House</h3>
+        </div>
+        <div class="card-body">
+          <form method="POST" enctype="multipart/form-data">
+            <!-- Price -->
+            <div class="form-floating mb-3">
+              <input type="number" class="form-control" id="price" name="price" placeholder="Enter price" required />
+              <label for="price">Price ($)</label>
+              <div class="invalid-feedback">Please enter a valid price.</div>
+            </div>
+
+            <!-- House Size -->
+            <div class="form-floating mb-3">
+              <input type="number" class="form-control" id="size" name="size" placeholder="House size in sq. ft." required />
+              <label for="size">House Size (sq. ft.)</label>
+              <div class="invalid-feedback">Please enter the size of the house.</div>
+            </div>
+
+            <!-- Location -->
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="location" name="location" placeholder="Enter location" required />
+              <label for="location">Location</label>
+              <div class="invalid-feedback">Please provide a location.</div>
+            </div>
+
+            <!-- Bedrooms -->
+            <div class="form-floating mb-3">
+              <input type="number" class="form-control" id="bedrooms" name="bedrooms" placeholder="Number of bedrooms" required />
+              <label for="bedrooms">Bedrooms</label>
+              <div class="invalid-feedback">Please specify the number of bedrooms.</div>
+            </div>
+
+            <!-- Bathrooms -->
+            <div class="form-floating mb-3">
+              <input type="number" class="form-control" id="bathrooms" name="bathrooms" placeholder="Number of bathrooms" required />
+              <label for="bathrooms">Bathrooms</label>
+              <div class="invalid-feedback">Please specify the number of bathrooms.</div>
+            </div>
+
+            <!-- Garage -->
+            <div class="mb-3">
+              <label class="form-label">Garage</label>
+              <div class="d-flex">
+                <div class="form-check me-3">
+                  <input class="form-check-input" type="radio" name="garage" id="garageYes" value="yes" required />
+                  <label class="form-check-label" for="garageYes">Yes</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="garage" id="garageNo" value="no" required />
+                  <label class="form-check-label" for="garageNo">No</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Property Type -->
+            <div class="form-floating mb-3">
+              <select class="form-select" id="property_type" name="property_type" required>
+                <option value="" disabled selected>Select property type</option>
+                <option value="apartment">Apartment</option>
+                <option value="house">House</option>
+              </select>
+              <label for="property_type">Property Type</label>
+              <div class="invalid-feedback">Please select a property type.</div>
+            </div>
+
+            <!-- Created Date -->
+            <div class="form-floating mb-3">
+              <input type="date" class="form-control" id="created_at" name="created_at" placeholder="Enter the date" required />
+              <label for="created_at">Created Date</label>
+              <div class="invalid-feedback">Please enter the creation date.</div>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="mb-3">
+              <label for="images" class="form-label">Upload House Images</label>
+              <input type="file" class="form-control" id="images" name="images" accept="image/*" multiple required />
+              <small class="text-muted">Allowed formats: JPG, PNG, JPEG. You can upload multiple images.</small>
+              <div class="invalid-feedback">Please upload at least one image of the house.</div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .card {
+    border-radius: 10px;
+  }
+  .card-header {
+    background-color: #f7f7f7;
+  }
+  .form-control:invalid {
+    border-color: #dc3545;
+  }
+  .form-control:valid {
+    border-color: #28a745;
+  }
+</style>
+{% endblock %}

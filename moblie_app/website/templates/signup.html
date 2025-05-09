@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}Sign Up{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <form method="POST" class="p-5 rounded shadow-lg bg-white">
+      <h3 class="text-center mb-4">Sign Up</h3>
+      <div class="form-floating mb-3">
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          placeholder="name@example.com"
+          required
+        />
+        <label for="email">Email Address</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="firstName"
+          name="firstName"
+          placeholder="First Name"
+          required
+        />
+        <label for="firstName">First Name</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="lastName"
+          name="lastName"
+          placeholder="Last Name"
+          required
+        />
+        <label for="lastName">Last Name</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          type="password"
+          class="form-control"
+          id="password1"
+          name="password1"
+          placeholder="Password"
+          required
+        />
+        <label for="password1">Password</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          type="password"
+          class="form-control"
+          id="password2"
+          name="password2"
+          placeholder="Confirm Password"
+          required
+        />
+        <label for="password2">Confirm Password</label>
+      </div>
+
+      <h3 class="h5 text-center mt-4">Account Type</h3>
+      <div class="row g-2 my-3">
+        <div class="col-6">
+          <input
+            type="radio"
+            class="btn-check"
+            name="account_type"
+            id="buyer"
+            autocomplete="off"
+            value="buyer"
+            required
+          />
+          <label class="btn btn-outline-primary w-100" for="buyer">
+            <i class="fas fa-shopping-cart"></i> Buyer
+          </label>
+        </div>
+        <div class="col-6">
+          <input
+            type="radio"
+            class="btn-check"
+            name="account_type"
+            id="seller"
+            autocomplete="off"
+            value="seller"
+            required
+          />
+          <label class="btn btn-outline-primary w-100" for="seller">
+            <i class="fas fa-store"></i> Seller
+          </label>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

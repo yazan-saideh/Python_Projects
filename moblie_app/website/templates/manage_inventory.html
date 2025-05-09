@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Inventory{% endblock %}
+
+{% block content %}
+<h2 class="my-4 text-center text-uppercase font-weight-bold text-primary">Manage Inventory</h2>
+
+<div class="row">
+    {% for estate in estates %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-lg border-0 rounded-4 glass-card">
+                <div id="carousel-{{ estate.id }}" class="carousel slide rounded-top" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for image in estate.images %}
+                            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                <img class="d-block w-100 rounded-top"
+                                     onclick="openImageViewer({{ estate.images | map(attribute='image_filename') | list | tojson }});"
+                                     src="{{ url_for('static', filename=image.image_filename) }}"
+                                     style="height: 200px; object-fit: cover;">
+                            </div>
+                        {% endfor %}
+                        {% if estate.images|length == 0 %}
+                            <div class="carousel-item active">
+                                <img src="{{ url_for('static', filename='default_image.png') }}" class="d-block w-100 rounded-top" style="height: 200px; object-fit: cover;" onclick="openImageViewer(['default_image.png']);">
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Carousel Indicators -->
+                    <ol class="carousel-indicators">
+                        {% for image in estate.images %}
+                            <li data-bs-target="#carousel-{{ estate.id }}" data-bs-slide-to="{{ loop.index0 }}" class="{% if loop.first %}active{% endif %}"></li>
+                        {% endfor %}
+                    </ol>
+
+                    <!-- Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ estate.id }}" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carousel-{{ estate.id }}" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+
+                <div class="card-body p-4">
+                    <h5 class="card-title text-dark text-uppercase font-weight-bold">{{ estate.location }}</h5>
+                    <p class="card-text">
+                        <span class="text-muted">Price:</span> <strong>{{ estate.price }}</strong> <br>
+                        <span class="text-muted">Size:</span> <strong>{{ estate.size }} sq ft</strong> <br>
+                        <span class="text-muted">Bedrooms:</span> <strong>{{ estate.bedrooms }}</strong> <br>
+                        <span class="text-muted">Bathrooms:</span> <strong>{{ estate.bathrooms }}</strong> <br>
+                        <span class="text-muted">Garage:</span> <strong>{{ 'Yes' if estate.garage else 'No' }}</strong>
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <button class="btn btn-gradient btn-sm text-uppercase font-weight-bold"
+                                onClick="openUpdateForm('{{ estate.id }}', '{{ estate.price }}', '{{ estate.size }}', '{{ estate.location }}', '{{ estate.bedrooms }}',
+                                '{{ estate.bathrooms }}', '{{ 'Yes' if estate.garage else 'No' }}', '{{ estate.images[0].image_filename if estate.images else 'default_image.png' }}');">
+                            <i class="fas fa-edit me-2"></i> Update
+                        </button>
+                        <form method="POST" action="{{ url_for('seller.manage_inventory') }}" style="display:inline;">
+                            <input type="hidden" name="delete_estate" value="{{ estate.id }}">
+                            <button type="submit" class="btn btn-danger btn-sm text-uppercase font-weight-bold" onClick="return confirm('Are you sure you want to delete this estate?');">
+                                <i class="fas fa-trash-alt me-2"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Image Viewer Modal -->
+<div class="modal fade" id="imageViewerModal" tabindex="-1" aria-labelledby="imageViewerLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageViewerLabel">Image Viewer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img id="imageViewer" src="" class="img-fluid" alt="Estate Image" style="max-height: 500px; object-fit: contain;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="showPreviousImage()">Previous</button>
+                <button type="button" class="btn btn-secondary" onclick="showNextImage()">Next</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Estate Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel">Update Estate</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateForm" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" id="estate_id" name="update_estate">
+                    <div class="mb-3">
+                        <label for="new_price" class="col-form-label">Price:</label>
+                        <input type="text" class="form-control" id="new_price" name="new_price" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_size" class="col-form-label">Size:</label>
+                        <input type="text" class="form-control" id="new_size" name="new_size" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_location" class="col-form-label">Location:</label>
+                        <input type="text" class="form-control" id="new_location" name="new_location" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_bedrooms" class="col-form-label">Bedrooms:</label>
+                        <input type="number" class="form-control" id="new_bedrooms" name="new_bedrooms" min="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_bathrooms" class="col-form-label">Bathrooms:</label>
+                        <input type="number" class="form-control" id="new_bathrooms" name="new_bathrooms" min="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_garage" class="col-form-label">Garage:</label>
+                        <select class="form-select" id="new_garage" name="new_garage">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_image" class="col-form-label">Images:</label>
+                        <input type="file" class="form-control" id="new_image" name="new_image" accept="image/*" multiple required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onClick="document.getElementById('updateForm').submit();">Update Estate</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentImageIndex = 0;
+    let images = [];
+    let baseUrl = "{{ url_for('static', filename='') }}";  // Base URL for static files
+
+    function openImageViewer(imageArray) {
+        images = imageArray;
+        currentImageIndex = 0;
+        updateImageViewer();
+
+        var modal = new bootstrap.Modal(document.getElementById('imageViewerModal'), {
+            backdrop: 'static',
+            keyboard: false
+        });
+        modal.show();
+    }
+
+    function updateImageViewer() {
+        if (images.length > 0) {
+            document.getElementById('imageViewer').src = baseUrl + images[currentImageIndex];
+        }
+    }
+
+    function showPreviousImage() {
+        if (currentImageIndex > 0) {
+            currentImageIndex--;
+            updateImageViewer();
+        }
+    }
+
+    function showNextImage() {
+        if (currentImageIndex < images.length - 1) {
+            currentImageIndex++;
+            updateImageViewer();
+        }
+    }
+
+    function openUpdateForm(id, price, size, location, bedrooms, bathrooms, garage, image) {
+        document.getElementById('estate_id').value = id;
+        document.getElementById('new_price').value = price;
+        document.getElementById('new_size').value = size;
+        document.getElementById('new_location').value = location;
+        document.getElementById('new_bedrooms').value = bedrooms;
+        document.getElementById('new_bathrooms').value = bathrooms;
+        document.getElementById('new_garage').value = garage === 'Yes' ? '1' : '0'; // Set the garage dropdown
+        // Optionally, you might want to handle the image preview as well
+        var updateModal = new bootstrap.Modal(document.getElementById('updateModal'));
+        updateModal.show();
+    }
+</script>
+
+<!-- Custom Styles -->
+<style>
+    .glass-card {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+    }
+    .btn-gradient {
+        background: linear-gradient(45deg, #6a11cb, #2575fc);
+        color: white;
+    }
+    .btn-gradient:hover {
+        background: linear-gradient(45deg, #5b0fb0, #2068e6);
+    }
+    .carousel-indicators [data-bs-target] {
+        background-color: #2575fc;
+    }
+    .carousel-control-prev-icon, .carousel-control-next-icon {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    h5.card-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.25rem;
+    }
+</style>
+{% endblock %}
